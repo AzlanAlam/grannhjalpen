@@ -35,3 +35,32 @@ body {
 .screen.active {
   display: block;
 }
+
+/* Lucide ikoner */
+.lucide-icon {
+  width: 31px;
+  height: 31px;
+  stroke-width: 2.2;
+  color: currentColor;
+}
+
+.cat .lucide-icon {
+  width: 39px;
+  height: 39px;
+}
+
+.contact-icon .lucide-icon,
+.call-btn .lucide-icon {
+  width: 23px;
+  height: 23px;
+}
+
+.nav .lucide-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.setting .lucide-icon {
+  width: 23px;
+  height: 23px;
+}
