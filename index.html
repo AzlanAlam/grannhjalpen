@@ -1,85 +1,989 @@
 <!doctype html>
 <html lang="sv">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Grannhjälpen – MVP</title>
-<script src="https://unpkg.com/lucide@latest"></script>
-<style>
-:root{
-  --navy:#1d3767;--navy-dark:#162d57;--red:#cf3638;--red-soft:#f4e3e6;--green:#39bd7a;--green-soft:#eaf9f0;--blue:#2567c9;--blue-soft:#eaf4ff;--amber:#e3a832;--amber-soft:#f8efe0;--bg:#f5f4f7;--card:#fff;--text:#101626;--muted:#6f737c;--line:#e2e0e6;--shadow:0 10px 22px rgba(24,34,57,.08);--radius:14px;
-}
-*{box-sizing:border-box} body{margin:0;background:#e9e9ee;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;color:var(--text)}
-.phone{width:390px;max-width:100%;min-height:844px;margin:0 auto;background:var(--bg);position:relative;overflow:hidden;box-shadow:0 0 0 1px #ddd}
-.screen{display:none;min-height:844px;padding-bottom:86px}.screen.active{display:block}.page{padding:24px 22px}.hero{background:var(--navy);color:white;padding:34px 24px 30px}.hero h1{font-size:25px;line-height:1.1;margin:0 0 8px;font-weight:800}.hero p{font-size:16px;margin:0;opacity:.9}.top{height:60px;background:#fff;display:flex;align-items:center;gap:14px;padding:0 22px;border-bottom:1px solid var(--line);font-size:22px;font-weight:800}.back{font-size:26px;line-height:1;border:0;background:transparent;color:var(--text);cursor:pointer}.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.ok-card{margin:26px 22px 16px;padding:20px;border-color:#bce8cd}.ok-row{display:flex;gap:12px;align-items:flex-start}.ok-title{font-weight:700;color:var(--green);font-size:16px}.ok-sub{color:var(--muted);margin-top:10px;font-size:14px}.big-help{margin:0 22px 28px;width:calc(100% - 44px);height:76px;border:none;border-radius:13px;background:var(--red);color:#fff;font-size:20px;font-weight:800;box-shadow:0 8px 16px rgba(207,54,56,.24);cursor:pointer}.tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:0 22px}.tile{height:136px;padding:22px 20px;background:white;border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);cursor:pointer}.tile svg{width:31px;height:31px;margin-bottom:20px;color:var(--navy)}.tile.emergency{border-color:#dca7af}.tile.emergency svg{color:#be3d48}.tile h3{margin:0 0 8px;font-size:18px}.tile p{margin:0;color:var(--muted);font-size:14px}.section{padding:34px 22px 12px;font-size:18px;font-weight:800}.activity{margin:0 22px 12px;padding:16px;display:flex;align-items:center;gap:14px}.activity-main{flex:1}.activity-title{font-weight:800}.activity-meta{color:var(--muted);font-size:14px;margin-top:5px}.pill{font-size:12px;border-radius:999px;padding:5px 9px}.pill.green{background:var(--green-soft);color:#2ca568}.pill.gray{background:#eef0f2;color:#777}.pill.amber{background:#fff4dc;color:#aa7200}.pill.red{background:#fee7e9;color:#b52b34}.bottom{position:absolute;bottom:0;left:0;right:0;height:80px;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);align-items:center}.nav{border:0;background:transparent;color:#6a6f78;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:12px;cursor:pointer}.nav svg,.nav .lucide-icon{width:24px;height:24px}.nav.active{color:var(--navy);font-weight:700}.cat-list{padding:25px 24px}.cat{min-height:102px;border-radius:13px;border:1px solid;padding:22px 26px;display:flex;align-items:center;gap:22px;margin-bottom:16px;cursor:pointer}.cat svg,.cat .lucide-icon{width:39px;height:39px;flex:0 0 auto}.cat h3{margin:0 0 9px;font-size:17px}.cat p{margin:0;color:#4c5058;font-size:14px;font-weight:600}.cat.el{background:var(--amber-soft);border-color:#ead8b9;color:var(--amber)}.cat.water{background:var(--blue-soft);border-color:#bfdaef;color:#246fd2}.cat.fire,.cat.akut{background:var(--red-soft);border-color:#dfb9c0;color:#c83e49}.cat.other{background:#e1e4e8;border-color:#aeb4bd;color:var(--navy)}.contacts,.profile{padding:26px 18px}.title{font-size:24px;font-weight:850;margin:0 0 28px}.subhead{font-size:20px;font-weight:850;margin:28px 0 14px}.contact-card{display:flex;align-items:center;gap:17px;background:white;border:1px solid var(--line);border-radius:13px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}.contact-icon{color:var(--navy);width:25px;height:25px;display:grid;place-items:center}.contact-card.urgent .contact-icon{color:#c64a54}.contact-name{font-size:17px;font-weight:800}.contact-phone{font-size:14px;color:var(--muted);margin-top:4px}.call-btn{margin-left:auto;border:0;background:var(--navy);color:white;border-radius:10px;width:44px;height:44px;display:grid;place-items:center}.resident{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}.resident-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:12px}.available{font-size:13px;color:var(--green)}.resident-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.action{height:40px;border:0;border-radius:9px;font-weight:800;font-size:15px}.action.primary{background:var(--navy);color:#fff}.action.secondary{background:#ebedf0;color:#1e2b46}.profile-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:22px;margin-bottom:30px}.profile-card h2{margin:0 0 18px;font-size:21px}.data-row{display:flex;justify-content:space-between;margin:15px 0;font-size:14px}.data-row span:first-child{color:var(--muted)}.setting-list{background:white;border:1px solid var(--line);border-radius:13px;overflow:hidden}.setting{display:flex;align-items:center;gap:14px;padding:18px;border-bottom:1px solid var(--line);font-size:16px;font-weight:750}.setting:last-child{border-bottom:0}.setting svg,.setting .lucide-icon{width:23px;height:23px;color:var(--navy)}.setting .state{margin-left:auto;color:var(--green);font-size:14px}.logout{width:100%;height:54px;border:0;border-radius:13px;background:#f2dfe5;color:#c53b49;font-weight:850;font-size:16px;margin-top:24px}.demo-switch{position:absolute;top:8px;right:8px;z-index:3;display:flex;gap:4px}.demo-switch button{border:0;background:rgba(255,255,255,.18);color:#fff;padding:5px 8px;border-radius:999px;font-size:11px}.demo-switch button.on{background:#fff;color:var(--navy)}.incident{margin:22px;padding:18px;background:#fff;border-radius:13px;border:1px solid var(--line);box-shadow:var(--shadow)}.incident h2{font-size:20px;margin:0 0 8px}.incident p{margin:4px 0;color:var(--muted)}.incident-actions{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}.btn{height:54px;border:0;border-radius:12px;font-weight:850;font-size:16px}.btn.green{background:var(--green);color:white}.btn.red{background:var(--red);color:white}.btn.gray{background:#e9ebef;color:var(--text)}.statusbox{text-align:center;padding:40px 22px 10px}.statusbox .circle{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px;background:var(--green-soft);color:var(--green)}.statusbox h1{font-size:25px;margin:0 0 8px}.timeline{margin:18px 22px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px}.timeline-row{display:flex;gap:12px;margin:12px 0;color:var(--muted);font-size:14px}.timeline-row b{color:var(--text)}.notice{margin:18px 22px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:var(--shadow)}.notice-title{font-size:18px;font-weight:850;margin-bottom:8px}.notice-msg{font-size:15px;line-height:1.4;color:#3c414a}.hide{display:none!important}
-.lucide-icon{width:31px;height:31px;stroke-width:2.2;color:currentColor;vertical-align:middle}
-.contact-icon .lucide-icon,.call-btn .lucide-icon{width:23px;height:23px}.btn .lucide-icon{width:18px;height:18px;margin-right:6px}.top .lucide-icon{width:22px;height:22px}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Grannhjälpen – MVP</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --navy: #1d3767;
+      --navy-dark: #162d57;
+      --red: #cf3638;
+      --red-soft: #f4e3e6;
+      --green: #39bd7a;
+      --green-soft: #eaf9f0;
+      --blue: #2567c9;
+      --blue-soft: #eaf4ff;
+      --amber: #e3a832;
+      --amber-soft: #f8efe0;
+      --bg: #f5f4f7;
+      --card: #fff;
+      --text: #101626;
+      --muted: #6f737c;
+      --line: #e2e0e6;
+      --shadow: 0 10px 22px rgba(24, 34, 57, .08);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: #e9e9ee;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color: var(--text)
+    }
+
+    .phone {
+      width: 390px;
+      max-width: 100%;
+      min-height: 844px;
+      margin: 0 auto;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 0 1px #ddd
+    }
+
+    .screen {
+      display: none;
+      min-height: 844px;
+      padding-bottom: 86px
+    }
+
+    .screen.active {
+      display: block
+    }
+
+    .page {
+      padding: 24px 22px
+    }
+
+    .hero {
+      background: var(--navy);
+      color: white;
+      padding: 34px 24px 30px
+    }
+
+    .hero h1 {
+      font-size: 25px;
+      line-height: 1.1;
+      margin: 0 0 8px;
+      font-weight: 800
+    }
+
+    .hero p {
+      font-size: 16px;
+      margin: 0;
+      opacity: .9
+    }
+
+    .top {
+      height: 60px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      font-size: 22px;
+      font-weight: 800
+    }
+
+    .back {
+      font-size: 26px;
+      line-height: 1;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow)
+    }
+
+    .ok-card {
+      margin: 26px 22px 16px;
+      padding: 20px;
+      border-color: #bce8cd
+    }
+
+    .ok-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start
+    }
+
+    .ok-title {
+      font-weight: 700;
+      color: var(--green);
+      font-size: 16px
+    }
+
+    .ok-sub {
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: 14px
+    }
+
+    .big-help {
+      margin: 0 22px 28px;
+      width: calc(100% - 44px);
+      height: 76px;
+      border: none;
+      border-radius: 13px;
+      background: var(--red);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      box-shadow: 0 8px 16px rgba(207, 54, 56, .24);
+      cursor: pointer
+    }
+
+    .tile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      padding: 0 22px
+    }
+
+    .tile {
+      height: 136px;
+      padding: 22px 20px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+      cursor: pointer
+    }
+
+    .tile svg {
+      width: 31px;
+      height: 31px;
+      margin-bottom: 20px;
+      color: var(--navy)
+    }
+
+    .tile.emergency {
+      border-color: #dca7af
+    }
+
+    .tile.emergency svg {
+      color: #be3d48
+    }
+
+    .tile h3 {
+      margin: 0 0 8px;
+      font-size: 18px
+    }
+
+    .tile p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .section {
+      padding: 34px 22px 12px;
+      font-size: 18px;
+      font-weight: 800
+    }
+
+    .activity {
+      margin: 0 22px 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px
+    }
+
+    .activity-main {
+      flex: 1
+    }
+
+    .activity-title {
+      font-weight: 800
+    }
+
+    .activity-meta {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 5px
+    }
+
+    .pill {
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 5px 9px
+    }
+
+    .pill.green {
+      background: var(--green-soft);
+      color: #2ca568
+    }
+
+    .pill.gray {
+      background: #eef0f2;
+      color: #777
+    }
+
+    .pill.amber {
+      background: #fff4dc;
+      color: #aa7200
+    }
+
+    .pill.red {
+      background: #fee7e9;
+      color: #b52b34
+    }
+
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: #fff;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center
+    }
+
+    .nav {
+      border: 0;
+      background: transparent;
+      color: #6a6f78;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      cursor: pointer
+    }
+
+    .nav svg,
+    .nav .lucide-icon {
+      width: 24px;
+      height: 24px
+    }
+
+    .nav.active {
+      color: var(--navy);
+      font-weight: 700
+    }
+
+    .cat-list {
+      padding: 25px 24px
+    }
+
+    .cat {
+      min-height: 102px;
+      border-radius: 13px;
+      border: 1px solid;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      margin-bottom: 16px;
+      cursor: pointer
+    }
+
+    .cat svg,
+    .cat .lucide-icon {
+      width: 39px;
+      height: 39px;
+      flex: 0 0 auto
+    }
+
+    .cat h3 {
+      margin: 0 0 9px;
+      font-size: 17px
+    }
+
+    .cat p {
+      margin: 0;
+      color: #4c5058;
+      font-size: 14px;
+      font-weight: 600
+    }
+
+    .cat.el {
+      background: var(--amber-soft);
+      border-color: #ead8b9;
+      color: var(--amber)
+    }
+
+    .cat.water {
+      background: var(--blue-soft);
+      border-color: #bfdaef;
+      color: #246fd2
+    }
+
+    .cat.fire,
+    .cat.akut {
+      background: var(--red-soft);
+      border-color: #dfb9c0;
+      color: #c83e49
+    }
+
+    .cat.other {
+      background: #e1e4e8;
+      border-color: #aeb4bd;
+      color: var(--navy)
+    }
+
+    .contacts,
+    .profile {
+      padding: 26px 18px
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 850;
+      margin: 0 0 28px
+    }
+
+    .subhead {
+      font-size: 20px;
+      font-weight: 850;
+      margin: 28px 0 14px
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow)
+    }
+
+    .contact-icon {
+      color: var(--navy);
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center
+    }
+
+    .contact-card.urgent .contact-icon {
+      color: #c64a54
+    }
+
+    .contact-name {
+      font-size: 17px;
+      font-weight: 800
+    }
+
+    .contact-phone {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 4px
+    }
+
+    .call-btn {
+      margin-left: auto;
+      border: 0;
+      background: var(--navy);
+      color: white;
+      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center
+    }
+
+    .resident {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow)
+    }
+
+    .resident-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px
+    }
+
+    .available {
+      font-size: 13px;
+      color: var(--green)
+    }
+
+    .resident-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px
+    }
+
+    .action {
+      height: 40px;
+      border: 0;
+      border-radius: 9px;
+      font-weight: 800;
+      font-size: 15px
+    }
+
+    .action.primary {
+      background: var(--navy);
+      color: #fff
+    }
+
+    .action.secondary {
+      background: #ebedf0;
+      color: #1e2b46
+    }
+
+    .profile-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 22px;
+      margin-bottom: 30px
+    }
+
+    .profile-card h2 {
+      margin: 0 0 18px;
+      font-size: 21px
+    }
+
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0;
+      font-size: 14px
+    }
+
+    .data-row span:first-child {
+      color: var(--muted)
+    }
+
+    .setting-list {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      overflow: hidden
+    }
+
+    .setting {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      font-size: 16px;
+      font-weight: 750
+    }
+
+    .setting:last-child {
+      border-bottom: 0
+    }
+
+    .setting svg,
+    .setting .lucide-icon {
+      width: 23px;
+      height: 23px;
+      color: var(--navy)
+    }
+
+    .setting .state {
+      margin-left: auto;
+      color: var(--green);
+      font-size: 14px
+    }
+
+    .logout {
+      width: 100%;
+      height: 54px;
+      border: 0;
+      border-radius: 13px;
+      background: #f2dfe5;
+      color: #c53b49;
+      font-weight: 850;
+      font-size: 16px;
+      margin-top: 24px
+    }
+
+    .demo-switch {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 3;
+      display: flex;
+      gap: 4px
+    }
+
+    .demo-switch button {
+      border: 0;
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 11px
+    }
+
+    .demo-switch button.on {
+      background: #fff;
+      color: var(--navy)
+    }
+
+    .incident {
+      margin: 22px;
+      padding: 18px;
+      background: #fff;
+      border-radius: 13px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow)
+    }
+
+    .incident h2 {
+      font-size: 20px;
+      margin: 0 0 8px
+    }
+
+    .incident p {
+      margin: 4px 0;
+      color: var(--muted)
+    }
+
+    .incident-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 16px
+    }
+
+    .btn {
+      height: 54px;
+      border: 0;
+      border-radius: 12px;
+      font-weight: 850;
+      font-size: 16px
+    }
+
+    .btn.green {
+      background: var(--green);
+      color: white
+    }
+
+    .btn.red {
+      background: var(--red);
+      color: white
+    }
+
+    .btn.gray {
+      background: #e9ebef;
+      color: var(--text)
+    }
+
+    .statusbox {
+      text-align: center;
+      padding: 40px 22px 10px
+    }
+
+    .statusbox .circle {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      background: var(--green-soft);
+      color: var(--green)
+    }
+
+    .statusbox h1 {
+      font-size: 25px;
+      margin: 0 0 8px
+    }
+
+    .timeline {
+      margin: 18px 22px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 18px
+    }
+
+    .timeline-row {
+      display: flex;
+      gap: 12px;
+      margin: 12px 0;
+      color: var(--muted);
+      font-size: 14px
+    }
+
+    .timeline-row b {
+      color: var(--text)
+    }
+
+    .notice {
+      margin: 18px 22px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 18px;
+      box-shadow: var(--shadow)
+    }
+
+    .notice-title {
+      font-size: 18px;
+      font-weight: 850;
+      margin-bottom: 8px
+    }
+
+    .notice-msg {
+      font-size: 15px;
+      line-height: 1.4;
+      color: #3c414a
+    }
+
+    .hide {
+      display: none !important
+    }
+
+    .lucide-icon {
+      width: 31px;
+      height: 31px;
+      stroke-width: 2.2;
+      color: currentColor;
+      vertical-align: middle
+    }
+
+    .contact-icon .lucide-icon,
+    .call-btn .lucide-icon {
+      width: 23px;
+      height: 23px
+    }
+
+    .btn .lucide-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 6px
+    }
+
+    .top .lucide-icon {
+      width: 22px;
+      height: 22px
+    }
+
+    /* Login screen */
+    .phone.login-mode .bottom,
+    .phone.login-mode .demo-switch {
+      display: none;
+    }
+
+    .login-screen {
+      min-height: 844px;
+      background: var(--navy);
+      color: white;
+      padding: 0;
+    }
+
+    .login-wrap {
+      min-height: 844px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 36px;
+      text-align: center;
+    }
+
+    .login-logo {
+      width: 96px;
+      height: 96px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, .13);
+      display: grid;
+      place-items: center;
+      margin-bottom: 34px;
+    }
+
+    .login-logo svg {
+      width: 58px;
+      height: 58px;
+      stroke-width: 2.4;
+      color: white;
+    }
+
+    .login-wrap h1 {
+      margin: 0 0 18px;
+      font-size: 34px;
+      font-weight: 850;
+      letter-spacing: -.5px;
+      color: white;
+    }
+
+    .login-sub {
+      margin: 0 0 48px;
+      font-size: 18px;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, .95);
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 56px;
+      border: 0;
+      border-radius: 15px;
+      font-size: 15px;
+      font-weight: 850;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    .login-btn.primary {
+      background: white;
+      color: #0f2347;
+    }
+
+    .login-btn.secondary {
+      background: rgba(255, 255, 255, .18);
+      color: white;
+    }
+
+    .login-badge {
+      margin-top: 32px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .10);
+      color: rgba(255, 255, 255, .86);
+      font-size: 13px;
+      font-weight: 650;
+    }
+  </style>
 </head>
+
 <body>
-<div class="phone">
-  <div class="demo-switch" id="demoSwitch"></div>
+  <div class="phone login-mode">
+    <div class="demo-switch" id="demoSwitch"></div>
 
-  <section id="home" class="screen active">
-    <div class="hero"><h1 id="hello">Hej Anna</h1><p id="area">Område: Norrmalm 3</p></div>
-    <div class="card ok-card"><div class="ok-row"><i data-lucide="circle-check" class="lucide-icon" style="color:var(--green)"></i><div><div class="ok-title" id="homeStatusTitle">Inga aktiva larm just nu</div><div class="ok-sub" id="homeStatusSub">Allt är lugnt i ditt område</div></div></div></div>
-    <button class="big-help" onclick="show('categories')">Behöver hjälp</button>
-    <div class="tile-grid">
-      <div class="tile" onclick="show('events')"><i data-lucide="circle-alert" class="lucide-icon"></i><h3>Aktiva händelser</h3><p id="activeCount">0 pågående</p></div>
-      <div class="tile" onclick="show('contacts')"><i data-lucide="users" class="lucide-icon"></i><h3>Mina kontakter</h3><p>24 grannar</p></div>
-      <div class="tile"><i data-lucide="phone" class="lucide-icon"></i><h3>Fastighetsjour</h3><p>Ring jour</p></div>
-      <div class="tile emergency"><i data-lucide="phone-call" class="lucide-icon"></i><h3>112 / Akut</h3><p>Nödnummer</p></div>
+    <section id="login" class="screen active login-screen">
+      <div class="login-wrap">
+
+        <div class="login-logo">
+          <i data-lucide="shield"></i>
+        </div>
+
+        <h1>Grannhjälp</h1>
+
+        <p class="login-sub">
+          Snabb hjälp i ditt område när vardagen störs<br>
+          eller krisen slår till
+        </p>
+
+        <button class="login-btn primary" onclick="show('home')">
+            Skapa konto
+          </button>
+
+        <button class="login-btn secondary" onclick="show('home')">
+          Logga in
+        </button>
+
+        <div class="login-badge">
+          Endast verifierade boende i ditt område
+        </div>
+
+      </div>
+    </section>
+
+    <section id="home" class="screen">
+      <div class="hero">
+        <h1 id="hello">Hej Anna</h1>
+        <p id="area">Område: Norrmalm 3</p>
+      </div>
+      <div class="card ok-card">
+        <div class="ok-row"><i data-lucide="circle-check" class="lucide-icon" style="color:var(--green)"></i>
+          <div>
+            <div class="ok-title" id="homeStatusTitle">Inga aktiva larm just nu</div>
+            <div class="ok-sub" id="homeStatusSub">Allt är lugnt i ditt område</div>
+          </div>
+        </div>
+      </div>
+      <button class="big-help" onclick="show('categories')">Behöver hjälp</button>
+      <div class="tile-grid">
+        <div class="tile" onclick="show('events')"><i data-lucide="circle-alert" class="lucide-icon"></i>
+          <h3>Aktiva händelser</h3>
+          <p id="activeCount">0 pågående</p>
+        </div>
+        <div class="tile" onclick="show('contacts')"><i data-lucide="users" class="lucide-icon"></i>
+          <h3>Mina kontakter</h3>
+          <p>24 grannar</p>
+        </div>
+        <div class="tile"><i data-lucide="phone" class="lucide-icon"></i>
+          <h3>Fastighetsjour</h3>
+          <p>Ring jour</p>
+        </div>
+        <div class="tile emergency"><i data-lucide="phone-call" class="lucide-icon"></i>
+          <h3>112 / Akut</h3>
+          <p>Nödnummer</p>
+        </div>
+      </div>
+      <div class="section">Senaste aktivitet</div>
+      <div class="card activity"><i data-lucide="circle-check" class="lucide-icon" style="color:var(--green)"></i>
+        <div class="activity-main">
+          <div class="activity-title">Elavbrott</div>
+          <div class="activity-meta">Johan hjälpte dig · 2024-04-20</div>
+        </div><span class="pill green">Löst</span>
+      </div>
+      <div class="card activity"><i data-lucide="clock" class="lucide-icon" style="color:#7d858d"></i>
+        <div class="activity-main">
+          <div class="activity-title">Vattenläcka</div>
+          <div class="activity-meta">Du avbröt larmet · 2024-04-18</div>
+        </div><span class="pill gray">Avbrutet</span>
+      </div>
+    </section>
+
+    <section id="categories" class="screen">
+      <div class="top"><button class="back" onclick="show('home')">‹</button>Vad behöver du hjälp med?</div>
+      <div class="cat-list">
+        <div class="cat el" onclick="createAlarm('Elavbrott','akut')"><i data-lucide="zap" class="lucide-icon"></i>
+          <div>
+            <h3>Elavbrott</h3>
+            <p>Ingen el i bostaden eller byggnaden</p>
+          </div>
+        </div>
+        <div class="cat water" onclick="createAlarm('Vattenläcka','akut')"><i data-lucide="droplet"
+            class="lucide-icon"></i>
+          <div>
+            <h3>Vattenläcka</h3>
+            <p>Läckage eller vattenproblem</p>
+          </div>
+        </div>
+        <div class="cat fire" onclick="createAlarm('Brand','akut')"><i data-lucide="flame" class="lucide-icon"></i>
+          <div>
+            <h3>Brand</h3>
+            <p>Rök, brandrisk eller brand</p>
+          </div>
+        </div>
+        <div class="cat akut" onclick="createAlarm('Akut','akut')"><i data-lucide="triangle-alert"
+            class="lucide-icon"></i>
+          <div>
+            <h3>Akut</h3>
+            <p>Omedelbar hjälp behövs</p>
+          </div>
+        </div>
+        <div class="cat other" onclick="createAlarm('Annan hjälp','varning')"><i data-lucide="circle-help"
+            class="lucide-icon"></i>
+          <div>
+            <h3>Annan hjälp</h3>
+            <p>Övrig situation</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="events" class="screen">
+      <div class="top"><button class="back" onclick="show('home')">‹</button>Aktiva händelser</div>
+      <div id="eventsList"></div>
+    </section>
+
+    <section id="incoming" class="screen">
+      <div class="top"><button class="back" onclick="show('home')">‹</button>Inkommande larm</div>
+      <div id="incomingContent"></div>
+    </section>
+
+    <section id="status" class="screen">
+      <div class="top"><button class="back" onclick="show('home')">‹</button>Status</div>
+      <div id="statusContent"></div>
+    </section>
+
+    <section id="contacts" class="screen">
+      <div class="contacts">
+        <h1 class="title">Kontakter</h1>
+        <h2 class="subhead">Viktiga kontakter</h2>
+        <div id="importantContacts"></div>
+        <h2 class="subhead">Boende i ditt område</h2>
+        <div id="residentContacts"></div>
+      </div>
+    </section>
+
+    <section id="profile" class="screen">
+      <div class="profile">
+        <h1 class="title">Profil</h1>
+        <div class="profile-card">
+          <h2>Personuppgifter</h2>
+          <div class="data-row"><span>Namn:</span><strong id="pName">Anna Andersson</strong></div>
+          <div class="data-row"><span>Adress:</span><strong>Drottninggatan 45</strong></div>
+          <div class="data-row"><span>Lägenhet:</span><strong id="pApt">1134</strong></div>
+          <div class="data-row"><span>Telefon:</span><strong>+46 70 123 45 67</strong></div>
+          <div class="data-row"><span>Område:</span><strong>Norrmalm 3</strong></div>
+        </div>
+        <h2 class="subhead">Inställningar</h2>
+        <div class="setting-list">
+          <div class="setting"><i data-lucide="bell" class="lucide-icon"></i>Notiser <span class="state">På</span>›
+          </div>
+          <div class="setting"><i data-lucide="users" class="lucide-icon"></i>Tillgänglig att hjälpa <span
+              class="state">På</span>›</div>
+          <div class="setting"><i data-lucide="phone" class="lucide-icon"></i>Visa telefonnummer för grannar <span
+              class="state">På</span>›</div>
+          <div class="setting"><i data-lucide="circle-alert" class="lucide-icon"></i>Kriskontakt <span
+              class="state"></span>›</div>
+        </div><button class="logout" onclick="logout()">Logga ut</button>
+      </div>
+    </section>
+
+    <div class="bottom">
+      <button class="nav active" data-nav="home" onclick="show('home')"><i data-lucide="house"
+          class="lucide-icon"></i>Hem</button>
+      <button class="nav" data-nav="events" onclick="show('events')"><i data-lucide="circle-alert"
+          class="lucide-icon"></i>Händelser</button>
+      <button class="nav" data-nav="contacts" onclick="show('contacts')"><i data-lucide="users"
+          class="lucide-icon"></i>Kontakter</button>
+      <button class="nav" data-nav="profile" onclick="show('profile')"><i data-lucide="user"
+          class="lucide-icon"></i>Profil</button>
     </div>
-    <div class="section">Senaste aktivitet</div>
-    <div class="card activity"><i data-lucide="circle-check" class="lucide-icon" style="color:var(--green)"></i><div class="activity-main"><div class="activity-title">Elavbrott</div><div class="activity-meta">Johan hjälpte dig · 2024-04-20</div></div><span class="pill green">Löst</span></div>
-    <div class="card activity"><i data-lucide="clock" class="lucide-icon" style="color:#7d858d"></i><div class="activity-main"><div class="activity-title">Vattenläcka</div><div class="activity-meta">Du avbröt larmet · 2024-04-18</div></div><span class="pill gray">Avbrutet</span></div>
-  </section>
-
-  <section id="categories" class="screen">
-    <div class="top"><button class="back" onclick="show('home')">‹</button>Vad behöver du hjälp med?</div>
-    <div class="cat-list">
-      <div class="cat el" onclick="createAlarm('Elavbrott','akut')"><i data-lucide="zap" class="lucide-icon"></i><div><h3>Elavbrott</h3><p>Ingen el i bostaden eller byggnaden</p></div></div>
-      <div class="cat water" onclick="createAlarm('Vattenläcka','akut')"><i data-lucide="droplet" class="lucide-icon"></i><div><h3>Vattenläcka</h3><p>Läckage eller vattenproblem</p></div></div>
-      <div class="cat fire" onclick="createAlarm('Brand','akut')"><i data-lucide="flame" class="lucide-icon"></i><div><h3>Brand</h3><p>Rök, brandrisk eller brand</p></div></div>
-      <div class="cat akut" onclick="createAlarm('Akut','akut')"><i data-lucide="triangle-alert" class="lucide-icon"></i><div><h3>Akut</h3><p>Omedelbar hjälp behövs</p></div></div>
-      <div class="cat other" onclick="createAlarm('Annan hjälp','varning')"><i data-lucide="circle-help" class="lucide-icon"></i><div><h3>Annan hjälp</h3><p>Övrig situation</p></div></div>
-    </div>
-  </section>
-
-  <section id="events" class="screen"><div class="top"><button class="back" onclick="show('home')">‹</button>Aktiva händelser</div><div id="eventsList"></div></section>
-
-  <section id="incoming" class="screen"><div class="top"><button class="back" onclick="show('home')">‹</button>Inkommande larm</div><div id="incomingContent"></div></section>
-
-  <section id="status" class="screen"><div class="top"><button class="back" onclick="show('home')">‹</button>Status</div><div id="statusContent"></div></section>
-
-  <section id="contacts" class="screen"><div class="contacts"><h1 class="title">Kontakter</h1><h2 class="subhead">Viktiga kontakter</h2><div id="importantContacts"></div><h2 class="subhead">Boende i ditt område</h2><div id="residentContacts"></div></div></section>
-
-  <section id="profile" class="screen"><div class="profile"><h1 class="title">Profil</h1><div class="profile-card"><h2>Personuppgifter</h2><div class="data-row"><span>Namn:</span><strong id="pName">Anna Andersson</strong></div><div class="data-row"><span>Adress:</span><strong>Drottninggatan 45</strong></div><div class="data-row"><span>Lägenhet:</span><strong id="pApt">1134</strong></div><div class="data-row"><span>Telefon:</span><strong>+46 70 123 45 67</strong></div><div class="data-row"><span>Område:</span><strong>Norrmalm 3</strong></div></div><h2 class="subhead">Inställningar</h2><div class="setting-list"><div class="setting"><i data-lucide="bell" class="lucide-icon"></i>Notiser <span class="state">På</span>›</div><div class="setting"><i data-lucide="users" class="lucide-icon"></i>Tillgänglig att hjälpa <span class="state">På</span>›</div><div class="setting"><i data-lucide="phone" class="lucide-icon"></i>Visa telefonnummer för grannar <span class="state">På</span>›</div><div class="setting"><i data-lucide="circle-alert" class="lucide-icon"></i>Kriskontakt <span class="state"></span>›</div></div><button class="logout">Logga ut</button></div></section>
-
-  <div class="bottom">
-    <button class="nav active" data-nav="home" onclick="show('home')"><i data-lucide="house" class="lucide-icon"></i>Hem</button>
-    <button class="nav" data-nav="events" onclick="show('events')"><i data-lucide="circle-alert" class="lucide-icon"></i>Händelser</button>
-    <button class="nav" data-nav="contacts" onclick="show('contacts')"><i data-lucide="users" class="lucide-icon"></i>Kontakter</button>
-    <button class="nav" data-nav="profile" onclick="show('profile')"><i data-lucide="user" class="lucide-icon"></i>Profil</button>
   </div>
-</div>
-<script>
-function refreshIcons(){ if(window.lucide){ lucide.createIcons(); } }
-function svgPhone(){return '<i data-lucide="phone" class="lucide-icon"></i>'}
-const users=[{id:1,name:'Anna',full:'Anna Andersson',apt:'1134'},{id:2,name:'Johan',full:'Johan Svensson',apt:'1142'},{id:3,name:'Maria',full:'Maria Karlsson',apt:'1145'},{id:4,name:'Erik',full:'Erik Nilsson',apt:'1138'}];let currentUser=users[0],incidents=[],notifications=[],nextId=1,currentIncident=null;
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.nav===id));if(id==='events')renderEvents();if(id==='contacts')renderContacts();if(id==='profile')renderProfile();renderHome();refreshIcons();}
-function renderSwitch(){document.getElementById('demoSwitch').innerHTML=users.map(u=>`<button class="${u.id===currentUser.id?'on':''}" onclick="currentUser=users.find(x=>x.id===${u.id});renderSwitch();show('home')">${u.name}</button>`).join('');refreshIcons();}
-function renderHome(){document.getElementById('hello').textContent='Hej '+currentUser.name;document.getElementById('pName').textContent=currentUser.full;document.getElementById('pApt').textContent=currentUser.apt;let active=incidents.filter(i=>i.status!=='Löst');document.getElementById('activeCount').textContent=active.length+' pågående';let mine=incidents.find(i=>i.createdBy===currentUser.id&&i.status!=='Löst');document.getElementById('homeStatusTitle').textContent=mine?'Du har ett aktivt larm':'Inga aktiva larm just nu';document.getElementById('homeStatusSub').textContent=mine?mine.category+' · '+mine.status:'Allt är lugnt i ditt område';refreshIcons();}
-function createAlarm(cat,severity){let inc={id:nextId++,category:cat,severity,createdBy:currentUser.id,status:'Väntar på svar',assignedTo:null,time:new Date()};incidents.push(inc);users.filter(u=>u.id!==currentUser.id).forEach(u=>notifications.push({userId:u.id,incidentId:inc.id}));currentIncident=inc.id;renderStatus();show('status')}
-function renderEvents(){let list=document.getElementById('eventsList');let mine=notifications.filter(n=>n.userId===currentUser.id).map(n=>incidents.find(i=>i.id===n.incidentId)).filter(Boolean);let active=incidents.filter(i=>i.status!=='Löst');if(mine.length){let i=mine[0];let creator=users.find(u=>u.id===i.createdBy);document.getElementById('incomingContent').innerHTML=`<div class="notice"><div class="notice-title">${creator.name} i lägenhet ${creator.apt} har ${i.category.toUpperCase()}</div><div class="notice-msg">Kan du komma över och hjälpa? Du är prioriterad eftersom du bor nära.</div><div class="incident-actions"><button class="btn green" onclick="accept(${i.id})">Jag hjälper</button><button class="btn gray" onclick="decline(${i.id})">Kan inte hjälpa</button><button class="btn red">Ring mig / 112</button></div></div>`;show('incoming');return}list.innerHTML=active.length?active.map(card).join(''):'<div class="notice"><div class="notice-title">Inga aktiva händelser</div><div class="notice-msg">Området har inga pågående larm.</div></div>';refreshIcons();}
-function card(i){let c=users.find(u=>u.id===i.createdBy),h=i.assignedTo?users.find(u=>u.id===i.assignedTo):null;return `<div class="incident"><h2>${i.category}</h2><p>${c.name} · Lägenhet ${c.apt}</p><p><span class="pill ${i.status==='Hjälp på väg'?'amber':'red'}">${i.status}</span></p>${h?`<p><b>${h.name}</b> hjälper</p>`:''}${i.createdBy===currentUser.id?`<div class="incident-actions"><button class="btn gray" onclick="currentIncident=${i.id};renderStatus();show('status')">Visa status</button></div>`:''}</div>`}
-function accept(id){let i=incidents.find(x=>x.id===id);i.status='Hjälp på väg';i.assignedTo=currentUser.id;notifications=notifications.filter(n=>!(n.userId===currentUser.id&&n.incidentId===id));show('events')}
-function decline(id){notifications=notifications.filter(n=>!(n.userId===currentUser.id&&n.incidentId===id));show('home')}
-function renderStatus(){let i=incidents.find(x=>x.id===currentIncident),h=i.assignedTo?users.find(u=>u.id===i.assignedTo):null;document.getElementById('statusContent').innerHTML=`<div class="statusbox"><div class="circle"><i data-lucide="circle-check" class="lucide-icon"></i></div><h1>${i.status==='Väntar på svar'?'Larm skickat':i.status}</h1><p>${i.status==='Väntar på svar'?'Närmaste grannar notifieras nu.':h?h.name+' är på väg till dig.':'Ärendet är avslutat.'}</p></div><div class="incident"><h2>${i.category}</h2><p>${currentUser.name} · Lägenhet ${currentUser.apt}</p><p><span class="pill ${i.status==='Väntar på svar'?'red':'amber'}">${i.status}</span></p><div class="incident-actions"><button class="btn red">Ring 112</button><button class="btn gray">Ring fastighetsjour</button>${i.status!=='Löst'?'<button class="btn green" onclick="resolve()">Markera som löst</button>':''}</div></div><div class="timeline"><div class="timeline-row"><b>Nu</b> Larm skapat</div><div class="timeline-row"><b>Steg 2</b> Grannar notifieras</div><div class="timeline-row"><b>Steg 3</b> Hjälp bekräftas</div></div>`;refreshIcons();}
-function resolve(){let i=incidents.find(x=>x.id===currentIncident);i.status='Löst';renderStatus();}
-function renderContacts(){const important=[['Fastighetsjour','08-123 456 78',''],['Fastighetsskötare','070-123 45 67',''],['112','112','urgent'],['Brandkår','112','urgent'],['Ambulans','112','urgent']];document.getElementById('importantContacts').innerHTML=important.map(x=>`<div class="contact-card ${x[2]}"><div class="contact-icon">${svgPhone()}</div><div><div class="contact-name">${x[0]}</div><div class="contact-phone">${x[1]}</div></div><button class="call-btn">${svgPhone()}</button></div>`).join('');document.getElementById('residentContacts').innerHTML=users.filter(u=>u.id!==currentUser.id).slice(0,2).map(u=>`<div class="resident"><div class="resident-top"><div><div class="contact-name">${u.full}</div><div class="contact-phone">Lägenhet ${u.apt}</div></div><div class="available">○ Tillgänglig</div></div><div class="resident-actions"><button class="action primary">Ring</button><button class="action secondary">Meddelande</button></div></div>`).join('');refreshIcons();}
-function renderProfile(){document.getElementById('pName').textContent=currentUser.full;document.getElementById('pApt').textContent=currentUser.apt;refreshIcons();}
-renderSwitch();renderContacts();renderProfile();renderHome();refreshIcons();
-</script>
+  <script>
+    function refreshIcons() { if (window.lucide) { lucide.createIcons(); } }
+    function svgPhone() { return '<i data-lucide="phone" class="lucide-icon"></i>' }
+    const users = [{ id: 1, name: 'Anna', full: 'Anna Andersson', apt: '1134' }, { id: 2, name: 'Johan', full: 'Johan Svensson', apt: '1142' }, { id: 3, name: 'Maria', full: 'Maria Karlsson', apt: '1145' }, { id: 4, name: 'Erik', full: 'Erik Nilsson', apt: '1138' }]; let currentUser = users[0], incidents = [], notifications = [], nextId = 1, currentIncident = null;
+    function show(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelector('.phone').classList.toggle('login-mode', id === 'login');
+      document.querySelectorAll('.nav').forEach(n => n.classList.toggle('active', n.dataset.nav === id));
+      if (id === 'events') renderEvents();
+      if (id === 'contacts') renderContacts();
+      if (id === 'profile') renderProfile();
+      renderHome();
+      refreshIcons();
+    }
+    function renderSwitch() { document.getElementById('demoSwitch').innerHTML = users.map(u => `<button class="${u.id === currentUser.id ? 'on' : ''}" onclick="currentUser=users.find(x=>x.id===${u.id});renderSwitch();show('home')">${u.name}</button>`).join(''); refreshIcons(); }
+    function renderHome() { document.getElementById('hello').textContent = 'Hej ' + currentUser.name; document.getElementById('pName').textContent = currentUser.full; document.getElementById('pApt').textContent = currentUser.apt; let active = incidents.filter(i => i.status !== 'Löst'); document.getElementById('activeCount').textContent = active.length + ' pågående'; let mine = incidents.find(i => i.createdBy === currentUser.id && i.status !== 'Löst'); document.getElementById('homeStatusTitle').textContent = mine ? 'Du har ett aktivt larm' : 'Inga aktiva larm just nu'; document.getElementById('homeStatusSub').textContent = mine ? mine.category + ' · ' + mine.status : 'Allt är lugnt i ditt område'; refreshIcons(); }
+    function createAlarm(cat, severity) { let inc = { id: nextId++, category: cat, severity, createdBy: currentUser.id, status: 'Väntar på svar', assignedTo: null, time: new Date() }; incidents.push(inc); users.filter(u => u.id !== currentUser.id).forEach(u => notifications.push({ userId: u.id, incidentId: inc.id })); currentIncident = inc.id; renderStatus(); show('status') }
+    function renderEvents() { let list = document.getElementById('eventsList'); let mine = notifications.filter(n => n.userId === currentUser.id).map(n => incidents.find(i => i.id === n.incidentId)).filter(Boolean); let active = incidents.filter(i => i.status !== 'Löst'); if (mine.length) { let i = mine[0]; let creator = users.find(u => u.id === i.createdBy); document.getElementById('incomingContent').innerHTML = `<div class="notice"><div class="notice-title">${creator.name} i lägenhet ${creator.apt} har ${i.category.toUpperCase()}</div><div class="notice-msg">Kan du komma över och hjälpa? Du är prioriterad eftersom du bor nära.</div><div class="incident-actions"><button class="btn green" onclick="accept(${i.id})">Jag hjälper</button><button class="btn gray" onclick="decline(${i.id})">Kan inte hjälpa</button><button class="btn red">Ring mig / 112</button></div></div>`; show('incoming'); return } list.innerHTML = active.length ? active.map(card).join('') : '<div class="notice"><div class="notice-title">Inga aktiva händelser</div><div class="notice-msg">Området har inga pågående larm.</div></div>'; refreshIcons(); }
+    function card(i) { let c = users.find(u => u.id === i.createdBy), h = i.assignedTo ? users.find(u => u.id === i.assignedTo) : null; return `<div class="incident"><h2>${i.category}</h2><p>${c.name} · Lägenhet ${c.apt}</p><p><span class="pill ${i.status === 'Hjälp på väg' ? 'amber' : 'red'}">${i.status}</span></p>${h ? `<p><b>${h.name}</b> hjälper</p>` : ''}${i.createdBy === currentUser.id ? `<div class="incident-actions"><button class="btn gray" onclick="currentIncident=${i.id};renderStatus();show('status')">Visa status</button></div>` : ''}</div>` }
+    function accept(id) { let i = incidents.find(x => x.id === id); i.status = 'Hjälp på väg'; i.assignedTo = currentUser.id; notifications = notifications.filter(n => !(n.userId === currentUser.id && n.incidentId === id)); show('events') }
+    function decline(id) { notifications = notifications.filter(n => !(n.userId === currentUser.id && n.incidentId === id)); show('home') }
+    function renderStatus() { let i = incidents.find(x => x.id === currentIncident), h = i.assignedTo ? users.find(u => u.id === i.assignedTo) : null; document.getElementById('statusContent').innerHTML = `<div class="statusbox"><div class="circle"><i data-lucide="circle-check" class="lucide-icon"></i></div><h1>${i.status === 'Väntar på svar' ? 'Larm skickat' : i.status}</h1><p>${i.status === 'Väntar på svar' ? 'Närmaste grannar notifieras nu.' : h ? h.name + ' är på väg till dig.' : 'Ärendet är avslutat.'}</p></div><div class="incident"><h2>${i.category}</h2><p>${currentUser.name} · Lägenhet ${currentUser.apt}</p><p><span class="pill ${i.status === 'Väntar på svar' ? 'red' : 'amber'}">${i.status}</span></p><div class="incident-actions"><button class="btn red">Ring 112</button><button class="btn gray">Ring fastighetsjour</button>${i.status !== 'Löst' ? '<button class="btn green" onclick="resolve()">Markera som löst</button>' : ''}</div></div><div class="timeline"><div class="timeline-row"><b>Nu</b> Larm skapat</div><div class="timeline-row"><b>Steg 2</b> Grannar notifieras</div><div class="timeline-row"><b>Steg 3</b> Hjälp bekräftas</div></div>`; refreshIcons(); }
+    function resolve() { let i = incidents.find(x => x.id === currentIncident); i.status = 'Löst'; renderStatus(); }
+    function renderContacts() { const important = [['Fastighetsjour', '08-123 456 78', ''], ['Fastighetsskötare', '070-123 45 67', ''], ['112', '112', 'urgent'], ['Brandkår', '112', 'urgent'], ['Ambulans', '112', 'urgent']]; document.getElementById('importantContacts').innerHTML = important.map(x => `<div class="contact-card ${x[2]}"><div class="contact-icon">${svgPhone()}</div><div><div class="contact-name">${x[0]}</div><div class="contact-phone">${x[1]}</div></div><button class="call-btn">${svgPhone()}</button></div>`).join(''); document.getElementById('residentContacts').innerHTML = users.filter(u => u.id !== currentUser.id).slice(0, 2).map(u => `<div class="resident"><div class="resident-top"><div><div class="contact-name">${u.full}</div><div class="contact-phone">Lägenhet ${u.apt}</div></div><div class="available">○ Tillgänglig</div></div><div class="resident-actions"><button class="action primary">Ring</button><button class="action secondary">Meddelande</button></div></div>`).join(''); refreshIcons(); }
+    function renderProfile() { document.getElementById('pName').textContent = currentUser.full; document.getElementById('pApt').textContent = currentUser.apt; refreshIcons(); }
+    function logout() {
+  currentUser = users[0];
+  currentIncident = null;
+  show('login');
+}
+    renderSwitch(); renderContacts(); renderProfile(); renderHome(); refreshIcons();
+  </script>
 </body>
 </html>

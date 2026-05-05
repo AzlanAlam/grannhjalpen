@@ -5,3 +5,4 @@ const users = [
 
 let currentUser = users[0];
 let incidents = [];
+let currentIncident = null;
